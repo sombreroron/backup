@@ -1,20 +1,27 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {}
-  },
-  "exclude": ["node_modules", "tmp"]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "importHelpers": true,
+        "target": "es2015",
+        "module": "esnext",
+        "lib": ["es2017", "dom"],
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "@util/event-handler": ["libs/util/event-handler/src/index.ts"],
+            "@util/kafka-client": ["libs/util/kafka-client/src/index.ts"],
+            "@util/logger": ["libs/util/logger/src/index.ts"],
+            "@util/mongodb-client": ["libs/util/mongodb-client/src/index.ts"],
+            "@util/storage-handler": ["libs/util/storage-handler/src/index.ts"]
+        }
+    },
+    "exclude": ["node_modules", "tmp"]
 }

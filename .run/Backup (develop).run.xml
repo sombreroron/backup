@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Backup (development)" type="NodeJSConfigurationType" singleton="true" application-parameters="serve backup --port 9232" path-to-js-file="node_modules/@nrwl/cli/bin/nx.js" working-dir="$PROJECT_DIR$">
+    <envs>
+      <env name="NODE_ENV" value="development" />
+      <env name="PORT" value="3000" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>
