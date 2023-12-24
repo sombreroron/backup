@@ -13,8 +13,8 @@ async function bootstrap() {
         .addTag('backup')
         .build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api', app, document);
 
+    SwaggerModule.setup('api', app, document);
 
     app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 

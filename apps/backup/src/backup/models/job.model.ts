@@ -9,12 +9,12 @@ import { ApiResponseProperty } from '@nestjs/swagger';
 export class Job {
     id?: string;
 
-    @Prop({ type: Number, required: true })
+    @Prop({ type: String, required: true })
     @IsNotEmpty()
     @ApiResponseProperty()
     userId: string;
 
-    @Prop({ type: Number, required: true })
+    @Prop({ type: String, required: true })
     @IsNotEmpty()
     @ApiResponseProperty()
     siteId: string;
@@ -38,6 +38,10 @@ export type JobDocument = Job & Document;
 export const JobSchema = SchemaFactory.createForClass(Job);
 JobSchema.virtual('id').get(function() {
     return this._id.toString();
+});
+
+JobSchema.virtual('tasks').get(function() {
+    return [];
 });
 
 JobSchema.pre<Job>('save', function() {

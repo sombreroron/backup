@@ -1,12 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { EventEmitHandlerService, Subscribe } from '@util/event-handler';
-import { TaskCreatedEvent } from '../events/task-created.event';
 import { Task } from '../models/task.model';
 import { Job } from '../models/job.model';
 import { TaskRepo } from '../repos/task.repo';
 import { EventService } from './event.service';
 import { Status } from '../enum/status.enum';
-import { TaskFinishedEvent } from '../events/task-finished.event';
+import { TaskType } from '../enum/task-type.enum';
 
 @Injectable()
 export class TaskService {
@@ -17,29 +15,20 @@ export class TaskService {
     ) {
     }
 
-    @Subscribe(TaskCreatedEvent)
-    async handleCreatedTask(task: Task) {
-        try {
-            this.logger.log(`Handling created task id: ${task.id}`);
-
-            await this.taskRepo.update(task.id, { status: Status.DONE });
-
-            await this.eventService.sendEvent(TaskFinishedEvent, { id: task.id, jobId: task.jobId });
-        } catch (e) {
-            this.logger.error(`Failed handling task with error: ${e.message}`, { task });
-        }
-    }
-
-    async getTasks(jobId: string): Promise<Task[]> {
-        const tasks = await this.taskRepo.find(jobId);
+    async getTasks(query: { jobId: string, type?: string, status?: Status, parentId?: string }): Promise<Task[]> {
+        const tasks = await this.taskRepo.find(query);
 
         return tasks;
     }
 
-    async createTask(job: Job): Promise<Task> {
-        const taskEntity = await this.taskRepo.create({ jobId: job.id, type: 'hi' });
+    async createTask(job: Job, type: TaskType, params: Record<string, string>, parentId?: string): Promise<Task> {
+        const taskEntity = await this.taskRepo.create({ jobId: job.id, type, params, parentId });
 
-        await this.eventService.sendEvent(TaskCreatedEvent, { id: taskEntity.id, jobId: job.id });
+        return taskEntity;
+    }
+
+    async updateTask(taskId: string, task: Partial<Task>): Promise<Task> {
+        const taskEntity = await this.taskRepo.update(taskId, task);
 
         return taskEntity;
     }

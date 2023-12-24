@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Status } from '../enum/status.enum';
 import { ApiResponseProperty } from '@nestjs/swagger';
@@ -12,10 +12,19 @@ export class Task {
     @IsNotEmpty()
     jobId?: string;
 
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'task' })
+    @IsOptional()
+    parentId?: string;
+
     @Prop({ type: String, required: true })
     @IsNotEmpty()
     @ApiResponseProperty()
     type: string;
+
+    @Prop({ type: Object, required: true })
+    @IsNotEmpty()
+    @ApiResponseProperty()
+    params: Record<string, string>;
 
     @Prop({ type: Number, enum: Status, required: true, default: Status.PENDING })
     @IsNotEmpty()

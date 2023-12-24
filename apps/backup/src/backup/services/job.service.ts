@@ -1,49 +1,31 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Subscribe } from '@util/event-handler';
-import { groupBy } from 'lodash';
-import { TaskFinishedEvent } from '../events/task-finished.event';
 import { JobRepo } from '../repos/job.repo';
-import { TaskRepo } from '../repos/task.repo';
-import { Task } from '../models/task.model';
-import { Status } from '../enum/status.enum';
 import { Job } from '../models/job.model';
 import { TaskService } from './task.service';
+import { Provider } from '../../provider/enum/provider.enum';
+import { TaskType } from '../enum/task-type.enum';
+import { UploadJobCreatedEvent } from '../events/upload-job-created.event';
+import { EventService } from './event.service';
 
 @Injectable()
 export class JobService {
     constructor(
+        private eventService: EventService,
         private logger: Logger,
         private jobRepo: JobRepo,
         private taskService: TaskService,
     ) {}
 
-    @Subscribe(TaskFinishedEvent)
-    async handleFinishedTask(task: Task) {
-        try {
-            this.logger.log(`Handling finished task id: ${task.id}`);
-
-            const tasks = await this.taskService.getTasks(task.jobId);
-            const tasksByStatus = groupBy(tasks, 'status');
-
-            if (tasksByStatus[Status.FAILED]) {
-                return this.jobRepo.update(task.jobId, { status: Status.FAILED });
-            }
-
-            if (tasksByStatus[Status.PENDING]) {
-                return;
-            }
-
-            return this.jobRepo.update(task.jobId, { status: Status.DONE });
-        } catch (e) {
-            this.logger.error(`Failed handling finished task with error: ${e.message}`, { task });
-        }
-    }
-
     async createJob(job: Job): Promise<Job> {
         const jobEntity = await this.jobRepo.create(job);
-        const task = await this.taskService.createTask(jobEntity);
 
-        jobEntity.tasks = [task];
+        await Promise.all(Object.values(Provider).map(async provider => {
+            const uploadChunkTask = await this.taskService.createTask(jobEntity, TaskType.Upload, { provider });
+
+            jobEntity.tasks.push(uploadChunkTask);
+        }));
+
+        await this.eventService.sendEvent(UploadJobCreatedEvent, { jobId: jobEntity.id, siteId: jobEntity.siteId });
 
         return jobEntity;
     }
@@ -51,8 +33,12 @@ export class JobService {
     async getJob(jobId: string): Promise<Job> {
         const job = await this.jobRepo.findOne(jobId);
 
-        job.tasks = await this.taskService.getTasks(jobId);
+        job.tasks = await this.taskService.getTasks({ jobId });
 
         return job;
+    }
+
+    async updateJob(jobId: string, job: Partial<Job>): Promise<Job> {
+        return this.jobRepo.update(jobId, job);
     }
 }

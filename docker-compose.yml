@@ -12,17 +12,6 @@ services:
         ports:
             - '27017-27019:27017-27019'
 
-    redis:
-        image: 'bitnami/redis:latest'
-        networks:
-            - backup
-        environment:
-            - ALLOW_EMPTY_PASSWORD=yes
-        ports:
-            - '6379:6379'
-        volumes:
-          - .data/redis:/bitnami'
-
     zookeeper:
         image: 'bitnami/zookeeper:latest'
         networks:

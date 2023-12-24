@@ -2,7 +2,9 @@
   "name": "backup",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+      "openapi-generate": "openapi-generator-cli generate"
+  },
   "private": true,
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -32,6 +34,7 @@
     "@nrwl/node": "15.9.7",
     "@nrwl/webpack": "15.9.7",
     "@nrwl/workspace": "15.9.7",
+    "@openapitools/openapi-generator-cli": "^2.5.1",
     "@types/jest": "^29.4.0",
     "@types/node": "~18.7.1",
     "@typescript-eslint/eslint-plugin": "^5.36.1",

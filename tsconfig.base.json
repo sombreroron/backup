@@ -16,6 +16,9 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
+            "@data-access/db": ["libs/data-access/db/src/index.ts"],
+            "@data-access/site": ["libs/data-access/site/src/index.ts"],
+            "@util/checksum": ["libs/util/checksum/src/index.ts"],
             "@util/event-handler": ["libs/util/event-handler/src/index.ts"],
             "@util/kafka-client": ["libs/util/kafka-client/src/index.ts"],
             "@util/logger": ["libs/util/logger/src/index.ts"],

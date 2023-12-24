@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Task } from '../models/task.model';
+import { Status } from '../enum/status.enum';
 
 @Injectable()
 export class TaskRepo {
@@ -25,8 +26,8 @@ export class TaskRepo {
         return taskEntity.toObject();
     }
 
-    async find(jobId: string): Promise<Task[]> {
-        const tasks = await this.taskModel.find({ jobId }).exec();
+    async find(query: { jobId: string, type?: string, status?: Status }): Promise<Task[]> {
+        const tasks = await this.taskModel.find(query).exec();
 
         return tasks.map(task => task.toObject());
     }
