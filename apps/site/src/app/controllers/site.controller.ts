@@ -16,7 +16,7 @@ export class SiteController {
     @ApiProduces('application/zip')
     @ApiOperation({ operationId: 'exportSite' })
     generateFile(@Res({ passthrough: true }) res: Response, @Param('id') id: string, @Query('chunkSize') chunkSize = 10): StreamableFile {
-        const filePath = path.resolve(process.cwd(), 'apps/site/src/app/files', `${id}.zip`);
+        const filePath = path.resolve(process.cwd(), 'apps/site/src/app/files', 'site.zip');
         const fileStream = fs.createReadStream(filePath, { highWaterMark: chunkSize });
 
         res.set({

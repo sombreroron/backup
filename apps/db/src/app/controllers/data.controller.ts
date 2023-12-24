@@ -16,7 +16,7 @@ export class DataController {
     @ApiProduces('application/zip')
     @ApiOperation({ operationId: 'exportDb' })
     generateFile(@Res({ passthrough: true }) res: Response, @Param('id') id: string, @Query('chunkSize') chunkSize = 10): StreamableFile {
-        const filePath = path.resolve(process.cwd(), 'apps/db/src/app/files', `${id}.zip`);
+        const filePath = path.resolve(process.cwd(), 'apps/db/src/app/files', 'db.zip');
         const fileStream = fs.createReadStream(filePath, { highWaterMark: chunkSize });
 
         res.set({
