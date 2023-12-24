@@ -62,6 +62,8 @@ export class DataService {
                 return;
             }
 
+            this.logger.log(`Job ${task.jobId} finished successfully`);
+
             await this.jobService.updateJob(task.jobId, { status: Status.DONE });
         } catch (e) {
             this.logger.error(`Failed handling finished part task with error: ${e.message}`, { task });
