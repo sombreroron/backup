@@ -135,4 +135,3 @@ Should preferably be implemented by an external cron job that runs every X minut
 
 Polling can be done by sending a GET request to ``/backup/{jobId}`` every X seconds and checking the status.
 A better implementation would be to use long polling, server sent events or websockets which would allow the server to notify the client when the status changes.
-## Table of Contents
