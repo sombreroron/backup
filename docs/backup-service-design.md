@@ -169,6 +169,54 @@ class BACKUP3 padding
 * On receiving an **UploadFileTaskFinished** event, Backup Service checks each **UploadFile** task status.
 * If all **UploadFile** tasks are *done* or a single one *failed*, Backup Service changes the job status to either *done* or *failed*.
 
+
+```mermaid
+graph LR
+    classDef padding fill:none, stroke:none;
+    classDef service fill:#fff1cc;
+    classDef task fill:#d5e7d4,stroke:#000;
+    
+    subgraph TASK1 [ ]
+        subgraph WRAPPER[Upload Part Tasks]
+            STATUS1[status:done]
+            STATUS2[status:done]
+            STATUS3[status:done]
+        end
+    end
+
+    subgraph TASK2 [ ]
+        subgraph WRAPPER2[Upload Part Tasks]
+            STATUS4[status:done]
+            STATUS5[status:done]
+            STATUS6[status:pending]
+        end
+    end
+    
+    subgraph TASK3 [ ]
+        subgraph WRAPPER3[Upload File Tasks]
+            STATUS7[status:done]
+            STATUS8[status:pending]
+        end
+    end
+    
+    subgraph JOB [ ]
+        subgraph WRAPPER4[Backup Job]
+            STATUS9[status:pending]
+        end
+    end
+    
+    TASK3 --> TASK1
+    TASK3 --> TASK2
+    
+    JOB --> TASK3
+    
+    class WRAPPER padding
+    class WRAPPER2 padding
+    class WRAPPER3 padding
+    class WRAPPER4 padding
+```
+
+
 ## Data Model
 
 ```mermaid
