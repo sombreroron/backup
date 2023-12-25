@@ -140,19 +140,19 @@ graph LR
 
 subgraph EVENT [ ]
     subgraph BACKUP["UploadFilePart"]
-        PROVIDER["Export Data (1-10)"]:::service --> TASK["Upload Part (1-10)"]:::task
+        PROVIDER["Export Data (1-10)"]:::service --> TASK["Upload Part (1-10)"]:::task --> VERIFY["Verify Checksum"]:::task
     end
 end
 
 subgraph EVENT2 [ ]
     subgraph BACKUP2["UploadFilePart"]
-        PROVIDER2["Export Data (11-20)"]:::service --> TASK2["Upload Part (11-20)"]:::task
+        PROVIDER2["Export Data (11-20)"]:::service --> TASK2["Upload Part (11-20)"]:::task --> VERIFY2["Verify Checksum"]:::task
     end
 end
 
 subgraph EVENT3 [ ]
     subgraph BACKUP3["UploadFilePart"]
-        PROVIDER3["Export Data (21-30)"]:::service --> TASK3["Upload Part (21-30)"]:::task
+        PROVIDER3["Export Data (21-30)"]:::service --> TASK3["Upload Part (21-30)"]:::task --> VERIFY3["Verify Checksum"]:::task
     end
 end
 
