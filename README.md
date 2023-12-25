@@ -1,6 +1,7 @@
 # Backup
 
 - [Backup](#backup)
+    - [HLD](#hld)
     - [Project Structure](#project-structure)
         - [Libs](#libs)
             - [@data-access](#data-access)
@@ -11,9 +12,6 @@
     - [Setup](#setup)
     - [Running backup](#running-backup)
         - [Implementation](#implementation)
-    - [Assumptions](#assumptions)
-        - [Download](#download)
-        - [Upload](#upload)
     - [Tech Stack](#tech-stack)
     - [Not Implemented](#not-implemented)
         - [Retry mechanism](#retry-mechanism)
@@ -21,6 +19,9 @@
         - [Scheduler](#scheduler)
         - [Polling](#polling)
 
+## HLD
+
+[Backup Service Design](./docs/backup-service-design.md)
 
 ## Project Structure
 
@@ -96,32 +97,7 @@ curl --location 'http://localhost:3000/backup/65880592573d64948ad94690'
 
 * UpdatePartTask and UpdateTask events are used to notify the job of task status changes.
 
-
-## Assumptions
-
-### Download
-
-* Export api streams data as a zip containing all data
-* Export api supports defining chunk size
-* Current solution downloads all chunks before proceeding to the upload. Should be optimized to stream chunks to the upload step.
-
-### Upload
-
-* Data storage supports multi part upload
-* Data storage returns checksum of uploaded files
-* Only upload part is implemented, upload completion is missing
-* DB storage is used instead of a storage, in order to save time, same db is used for storage and backup metadata
-
-## Tech Stack
-
-* DB - Writes are infrequent and data is small, MongoDB should be sufficient with a potential to scale. At a large scale, a write optimized database such as Cassandra can be considered.
-* Event Handler - Kafka is used as a message broker, chosen for its high throughput and fault tolerance.
-
 ## Not Implemented
-
-### Retry mechanism
-
-Easily implemented by re-running the job, skipping each step that was already completed and retrying steps that failed.
 
 ### Size limit
 
