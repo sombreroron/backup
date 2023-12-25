@@ -1,0 +1,21 @@
+{
+    "options": {
+        "chunkSize": 10,
+        "uploadPartLimit": 2
+    },
+    "kafka": {
+        "brokers": "localhost:9092",
+        "topic": "Backup"
+    },
+    "mongodb": {
+        "host": "localhost",
+        "port": 27017,
+        "user": "backup",
+        "pass": "backup123",
+        "dbName": "backup"
+    },
+    "services": {
+        "site": "http://localhost:3001",
+        "db": "http://localhost:3002"
+    }
+}

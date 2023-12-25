@@ -1,0 +1,21 @@
+{
+    "$schema": "node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+    "spaces": 2,
+    "generator-cli": {
+        "version": "5.3.1",
+        "generators": {
+            "data-access-site": {
+                "generatorName": "typescript-axios",
+                "output": "#{cwd}/libs/data-access/site/src/lib/openapi",
+                "inputSpec": "http://localhost:3001/api-json",
+                "skipValidateSpec": true
+            },
+            "data-access-db": {
+                "generatorName": "typescript-axios",
+                "output": "#{cwd}/libs/data-access/db/src/lib/openapi",
+                "inputSpec": "http://localhost:3002/api-json",
+                "skipValidateSpec": true
+            }
+        }
+    }
+}
